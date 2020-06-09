@@ -1,0 +1,11 @@
+github에 올리는방법
+
+git status
+
+git add .
+
+git status
+
+git commit -m "파일명 정해주기"
+
+git push
