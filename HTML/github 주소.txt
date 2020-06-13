@@ -1,7 +1,1 @@
 https://github.com/4th5-2-deep
-
-br -> 줄바꿈
-
-hr -> 경계선 표시
-
-target="_blank" -> 새로운 창으로 넘어감
