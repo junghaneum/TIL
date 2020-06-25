@@ -1,9 +1,27 @@
 from django.db import models
+from imagekit.models import ProcessedImageField
+from imagekit.processors import Thumbnail
+from django.conf import settings
 
-# Create your models here.
+# User : Article = 1: N
+# Article : Comment = 1 : N
+# User : Comment = 1 : N
 class Article(models.Model):
     title = models.CharField(max_length=10)
     content = models.TextField()
+    # image = models.ImageField(blank=True) # None(null) vs. 0, ''
+    image = ProcessedImageField(
+                    blank=True,
+                    processors=[ # 어떤 가공을 할지
+                        Thumbnail(300, 300)
+                    ], 
+                    format='JPEG', # 이미지 포맷 (jpg, png)
+                    options={ # 이미지 포맷 관련 옵션
+                        'quality': 90, 
+                    }    
+                )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # 'auth.User'
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_articles', blank=True)            
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -12,6 +30,7 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # 'auth.User'
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     # Article : Comment = 1 : N
     # (부모) : (자식)
@@ -48,3 +67,13 @@ class Comment(models.Model):
     # article = comment.article
     # article.title #=> '안녕'
     # article.content #=> '반가워'
+
+# Django Fixtures
+# 1. dumpdata
+# python manage.py dumpdata articles.article --indent=2 >article.json
+
+# 2. loaddata
+# python manage.py loaddata article.json
+
+# 3. csv to fixture
+# https://hyp.hk/c2f

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'articles',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +123,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files
+# 1. 업로드 되는 이미지 파일 위치를 설정
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# 2. 업로드 된 이미지의 주소를 생성하는 설정
+MEDIA_URL = '/media/' # 아무거나 해도 됨
+# 3. urls.py
